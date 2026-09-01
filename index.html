@@ -4,11 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>CryptoTrack — Exchange Arbitrage Tracker</title>
+  <title>CryptoTrack — Live Crypto Exchange Tracker</title>
 
   <meta
     name="description"
-    content="Compare cryptocurrency prices across multiple exchanges and identify potential arbitrage opportunities."
+    content="Live cryptocurrency prices, exchange comparison and arbitrage opportunities."
   >
 
   <style>
@@ -20,25 +20,28 @@
 
     body {
       font-family: Arial, Helvetica, sans-serif;
-      background: #05080d;
-      color: #f5f7fa;
+      background: #070a0f;
+      color: #f1f5f9;
       min-height: 100vh;
     }
 
     header {
-      border-bottom: 1px solid #1c2530;
-      padding: 24px 5%;
-      background: #080c12;
+      border-bottom: 1px solid #202733;
+      padding: 22px 5%;
+      background: #080b10;
+      position: sticky;
+      top: 0;
+      z-index: 10;
     }
 
     .logo {
-      font-size: 30px;
+      font-size: 28px;
       font-weight: 900;
       letter-spacing: -1px;
     }
 
     .logo span {
-      color: #18d875;
+      color: #00d084;
     }
 
     main {
@@ -49,74 +52,93 @@
     }
 
     .hero h1 {
-      font-size: clamp(38px, 6vw, 72px);
+      font-size: clamp(38px, 6vw, 70px);
       line-height: 1.05;
       margin-bottom: 20px;
     }
 
     .hero h1 span {
-      color: #18d875;
+      color: #00d084;
     }
 
     .hero p {
-      color: #84909e;
+      color: #8b96a8;
       font-size: 18px;
-      max-width: 700px;
-      line-height: 1.6;
-      margin-bottom: 35px;
+      line-height: 1.7;
+      max-width: 720px;
     }
 
     .controls {
       display: grid;
-      grid-template-columns: 1fr 220px 170px;
-      gap: 12px;
-      margin-bottom: 35px;
+      grid-template-columns: 1fr 220px 180px;
+      gap: 14px;
+      margin: 35px 0;
     }
 
     input,
     select,
     button {
       width: 100%;
-      padding: 17px 18px;
+      min-height: 58px;
       border-radius: 12px;
-      border: 1px solid #222c38;
-      background: #0c1219;
-      color: white;
+      border: 1px solid #27303d;
+      background: #0d1219;
+      color: #f1f5f9;
+      padding: 0 18px;
       font-size: 16px;
       outline: none;
     }
 
     input:focus,
     select:focus {
-      border-color: #18d875;
+      border-color: #00d084;
     }
 
     button {
       cursor: pointer;
-      transition: 0.2s;
+      background: #00d084;
+      color: #03120c;
+      border: none;
+      font-weight: 800;
     }
 
     button:hover {
-      border-color: #18d875;
-      background: #101a16;
+      opacity: 0.9;
+    }
+
+    .status {
+      margin-bottom: 25px;
+      padding: 15px 18px;
+      border-radius: 10px;
+      background: #0d1219;
+      border: 1px solid #202936;
+      color: #8b96a8;
+    }
+
+    .status.online {
+      color: #00d084;
+    }
+
+    .status.error {
+      color: #ff6262;
     }
 
     .stats {
       display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 15px;
-      margin-bottom: 45px;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 40px;
     }
 
     .stat {
-      background: #0b1118;
-      border: 1px solid #202a35;
+      background: #0d1219;
+      border: 1px solid #202936;
       border-radius: 18px;
       padding: 25px;
     }
 
-    .stat-title {
-      color: #778391;
+    .stat-label {
+      color: #778396;
       font-size: 13px;
       text-transform: uppercase;
       letter-spacing: 1px;
@@ -124,43 +146,61 @@
     }
 
     .stat-value {
-      font-size: 28px;
+      font-size: 30px;
       font-weight: 800;
     }
 
     .green {
-      color: #18d875;
+      color: #00d084;
+    }
+
+    .red {
+      color: #ff6262;
+    }
+
+    section {
+      margin-top: 45px;
     }
 
     .section-title {
-      font-size: 28px;
-      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 18px;
     }
 
-    .table-container {
-      width: 100%;
+    .section-title h2 {
+      font-size: 28px;
+    }
+
+    .section-title span {
+      color: #778396;
+      font-size: 14px;
+    }
+
+    .table-wrapper {
       overflow-x: auto;
-      border: 1px solid #202a35;
+      border: 1px solid #202936;
       border-radius: 18px;
-      background: #0b1118;
-      margin-bottom: 50px;
+      background: #0b1016;
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
-      min-width: 900px;
+      min-width: 850px;
     }
 
     th,
     td {
       padding: 18px;
       text-align: left;
-      border-bottom: 1px solid #1a232d;
+      border-bottom: 1px solid #1c2530;
     }
 
     th {
-      color: #788594;
+      color: #778396;
       font-size: 13px;
       text-transform: uppercase;
       letter-spacing: 0.7px;
@@ -174,128 +214,109 @@
       border-bottom: none;
     }
 
-    .coin {
-      font-weight: 800;
-    }
-
-    .positive {
-      color: #18d875;
-    }
-
-    .negative {
-      color: #ff5c69;
-    }
-
-    .exchange {
+    .exchange-name {
+      font-weight: 700;
       text-transform: capitalize;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 20px;
+      font-size: 12px;
       font-weight: 700;
     }
 
-    .status {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
+    .badge.online {
+      background: rgba(0, 208, 132, 0.12);
+      color: #00d084;
     }
 
-    .dot {
-      width: 9px;
-      height: 9px;
-      border-radius: 50%;
-      background: #18d875;
-      display: inline-block;
+    .badge.offline {
+      background: rgba(255, 98, 98, 0.12);
+      color: #ff6262;
     }
 
-    .offline .dot {
-      background: #ff4d5e;
-    }
-
-    .arbitrage-card {
-      background: #0b1118;
-      border: 1px solid #202a35;
-      border-radius: 18px;
-      overflow: hidden;
+    .coin-selector {
       margin-bottom: 20px;
     }
 
-    .arb-row {
-      display: grid;
-      grid-template-columns: 1.2fr 1fr 1fr 1fr 1fr;
-      gap: 10px;
-      align-items: center;
+    .coin-selector select {
+      max-width: 300px;
+    }
+
+    .arbitrage-card {
+      background: #0d1219;
+      border: 1px solid #202936;
+      border-radius: 16px;
       padding: 20px;
-      border-bottom: 1px solid #1a232d;
+      margin-bottom: 12px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 120px;
+      gap: 20px;
+      align-items: center;
     }
 
-    .arb-row:last-child {
-      border-bottom: none;
+    .arb-symbol {
+      font-size: 18px;
+      font-weight: 800;
     }
 
-    .arb-header {
-      color: #788594;
-      font-size: 12px;
+    .arb-label {
+      display: block;
+      color: #778396;
+      font-size: 11px;
       text-transform: uppercase;
+      margin-bottom: 6px;
     }
 
     .spread {
-      color: #18d875;
-      font-weight: 900;
-      font-size: 18px;
+      color: #00d084;
+      font-size: 20px;
+      font-weight: 800;
     }
 
-    .loading {
+    .empty {
       text-align: center;
-      padding: 45px;
-      color: #788594;
-    }
-
-    .error {
-      background: #261016;
-      border: 1px solid #63232e;
-      color: #ff7380;
-      padding: 18px;
-      border-radius: 12px;
-      margin-bottom: 25px;
-      display: none;
+      padding: 40px;
+      color: #778396;
     }
 
     footer {
-      border-top: 1px solid #1c2530;
+      border-top: 1px solid #202733;
+      margin-top: 70px;
       padding: 30px 5%;
-      color: #66717e;
       text-align: center;
-      margin-top: 60px;
+      color: #596577;
+      font-size: 14px;
     }
 
-    @media (max-width: 1000px) {
+    @media (max-width: 900px) {
+      .controls {
+        grid-template-columns: 1fr;
+      }
+
       .stats {
         grid-template-columns: repeat(2, 1fr);
       }
 
-      .controls {
-        grid-template-columns: 1fr;
+      .arbitrage-card {
+        grid-template-columns: 1fr 1fr;
       }
     }
 
-    @media (max-width: 600px) {
+    @media (max-width: 550px) {
       main {
         width: 92%;
-        padding: 40px 0;
+        padding-top: 35px;
       }
 
       header {
-        padding: 20px 4%;
+        padding: 18px 4%;
       }
 
       .logo {
-        font-size: 25px;
-      }
-
-      .hero h1 {
-        font-size: 42px;
-      }
-
-      .hero p {
-        font-size: 16px;
+        font-size: 23px;
       }
 
       .stats {
@@ -303,11 +324,16 @@
       }
 
       .stat {
-        padding: 22px;
+        padding: 20px;
       }
 
-      .section-title {
-        font-size: 24px;
+      .hero p {
+        font-size: 16px;
+      }
+
+      .arbitrage-card {
+        grid-template-columns: 1fr;
+        gap: 15px;
       }
     }
   </style>
@@ -323,99 +349,125 @@
 
 <main>
 
-  <section class="hero">
+  <div class="hero">
     <h1>
       Crypto Exchange <span>Tracker</span>
     </h1>
 
     <p>
-      Compare cryptocurrency prices across major exchanges
-      and identify potential arbitrage opportunities in real time.
+      Compare cryptocurrency prices across multiple exchanges,
+      monitor live market data and identify potential arbitrage
+      opportunities.
     </p>
-  </section>
+  </div>
 
-  <div id="errorBox" class="error"></div>
-
-  <section class="controls">
+  <div class="controls">
 
     <input
       type="text"
-      id="search"
+      id="searchInput"
       placeholder="Search BTC, ETH, SOL, SUI..."
     >
 
-    <select id="refreshRate">
-      <option value="5">Refresh 5 seconds</option>
-      <option value="10" selected>Refresh 10 seconds</option>
-      <option value="30">Refresh 30 seconds</option>
-      <option value="60">Refresh 1 minute</option>
+    <select id="refreshSelect">
+      <option value="5000">Refresh 5 seconds</option>
+      <option value="10000" selected>Refresh 10 seconds</option>
+      <option value="30000">Refresh 30 seconds</option>
+      <option value="60000">Refresh 1 minute</option>
     </select>
 
-    <button onclick="loadData()">
+    <button id="refreshButton">
       ↻ Refresh Now
     </button>
 
-  </section>
+  </div>
 
-  <section class="stats">
+  <div id="statusBox" class="status">
+    Connecting to crypto market API...
+  </div>
+
+  <div class="stats">
 
     <div class="stat">
-      <div class="stat-title">Coins</div>
+      <div class="stat-label">Coins</div>
       <div class="stat-value" id="coinCount">--</div>
     </div>
 
     <div class="stat">
-      <div class="stat-title">Exchanges</div>
+      <div class="stat-label">Exchanges</div>
       <div class="stat-value" id="exchangeCount">--</div>
     </div>
 
     <div class="stat">
-      <div class="stat-title">Online</div>
+      <div class="stat-label">Online</div>
       <div class="stat-value green" id="onlineCount">--</div>
     </div>
 
     <div class="stat">
-      <div class="stat-title">Best Spread</div>
+      <div class="stat-label">Best Spread</div>
       <div class="stat-value green" id="bestSpread">--</div>
     </div>
 
-    <div class="stat">
-      <div class="stat-title">Updated</div>
-      <div class="stat-value" id="updated">--</div>
-    </div>
+  </div>
 
-  </section>
+  <!-- MARKET DATA -->
 
   <section>
 
-    <h2 class="section-title">
-      Market Prices
-    </h2>
+    <div class="section-title">
+      <h2>Live Market Data</h2>
+      <span id="lastUpdated">Waiting for data...</span>
+    </div>
 
-    <div class="table-container">
+    <div class="coin-selector">
+
+      <select id="coinSelect">
+        <option value="BTC/USDT">BTC/USDT</option>
+        <option value="ETH/USDT">ETH/USDT</option>
+        <option value="BNB/USDT">BNB/USDT</option>
+        <option value="SOL/USDT">SOL/USDT</option>
+        <option value="XRP/USDT">XRP/USDT</option>
+        <option value="DOGE/USDT">DOGE/USDT</option>
+        <option value="ADA/USDT">ADA/USDT</option>
+        <option value="AVAX/USDT">AVAX/USDT</option>
+        <option value="LINK/USDT">LINK/USDT</option>
+        <option value="DOT/USDT">DOT/USDT</option>
+        <option value="TRX/USDT">TRX/USDT</option>
+        <option value="LTC/USDT">LTC/USDT</option>
+        <option value="BCH/USDT">BCH/USDT</option>
+        <option value="UNI/USDT">UNI/USDT</option>
+        <option value="NEAR/USDT">NEAR/USDT</option>
+        <option value="APT/USDT">APT/USDT</option>
+        <option value="SUI/USDT">SUI/USDT</option>
+        <option value="PEPE/USDT">PEPE/USDT</option>
+        <option value="SHIB/USDT">SHIB/USDT</option>
+        <option value="TON/USDT">TON/USDT</option>
+      </select>
+
+    </div>
+
+    <div class="table-wrapper">
 
       <table>
 
         <thead>
           <tr>
-            <th>Coin</th>
             <th>Exchange</th>
+            <th>Status</th>
             <th>Price</th>
-            <th>24h Change</th>
             <th>Bid</th>
             <th>Ask</th>
-            <th>Volume 24h</th>
+            <th>24h Change</th>
+            <th>24h Volume</th>
           </tr>
         </thead>
 
         <tbody id="marketTable">
-
           <tr>
-            <td colspan="7" class="loading">
+            <td colspan="7" class="empty">
               Loading market data...
             </td>
           </tr>
-
         </tbody>
 
       </table>
@@ -424,28 +476,53 @@
 
   </section>
 
+  <!-- EXCHANGES -->
+
   <section>
 
-    <h2 class="section-title">
-      Arbitrage Opportunities
-    </h2>
+    <div class="section-title">
+      <h2>Exchange Status</h2>
+      <span>API connection status</span>
+    </div>
 
-    <div class="arbitrage-card">
+    <div class="table-wrapper">
 
-      <div class="arb-row arb-header">
-        <div>Coin</div>
-        <div>Buy</div>
-        <div>Sell</div>
-        <div>Spread</div>
-        <div>Action</div>
-      </div>
+      <table>
 
-      <div id="arbitrageTable">
+        <thead>
+          <tr>
+            <th>Exchange</th>
+            <th>Status</th>
+          </tr>
+        </thead>
 
-        <div class="loading">
-          Loading arbitrage opportunities...
-        </div>
+        <tbody id="exchangeTable">
+          <tr>
+            <td colspan="2" class="empty">
+              Loading exchanges...
+            </td>
+          </tr>
+        </tbody>
 
+      </table>
+
+    </div>
+
+  </section>
+
+  <!-- ARBITRAGE -->
+
+  <section>
+
+    <div class="section-title">
+      <h2>Arbitrage Opportunities</h2>
+      <span>Gross spread before fees</span>
+    </div>
+
+    <div id="arbitrageList">
+
+      <div class="empty">
+        Loading arbitrage opportunities...
       </div>
 
     </div>
@@ -455,68 +532,219 @@
 </main>
 
 <footer>
-  CryptoTrack © 2026 — Market data provided by connected exchanges.
+  CryptoTrack © 2026 — Market data provided through the Crypto Tracker API
 </footer>
 
 
 <script>
 
   /*
-  ==========================================================
-  CRYPTO TRACK FRONTEND
-  CONNECTED TO YOUR RENDER API
-  ==========================================================
-  */
+   * =====================================================
+   * CRYPTO TRACKER API
+   * =====================================================
+   *
+   * This is your Render backend.
+   */
 
   const API_URL =
     "https://crypto-tracker-api-ss7a.onrender.com";
 
 
   let marketData = null;
+  let arbitrageData = null;
   let refreshTimer = null;
 
 
   /*
-  ==========================================================
-  LOAD MARKET DATA
-  ==========================================================
-  */
+   * =====================================================
+   * ELEMENTS
+   * =====================================================
+   */
 
-  async function loadData() {
+  const statusBox =
+    document.getElementById("statusBox");
 
-    const errorBox =
-      document.getElementById("errorBox");
+  const marketTable =
+    document.getElementById("marketTable");
 
-    errorBox.style.display = "none";
+  const exchangeTable =
+    document.getElementById("exchangeTable");
+
+  const arbitrageList =
+    document.getElementById("arbitrageList");
+
+  const coinSelect =
+    document.getElementById("coinSelect");
+
+  const searchInput =
+    document.getElementById("searchInput");
+
+  const refreshSelect =
+    document.getElementById("refreshSelect");
+
+  const refreshButton =
+    document.getElementById("refreshButton");
+
+
+  /*
+   * =====================================================
+   * FORMAT NUMBER
+   * =====================================================
+   */
+
+  function formatNumber(value) {
+
+    if (
+      value === null ||
+      value === undefined ||
+      Number.isNaN(Number(value))
+    ) {
+      return "--";
+    }
+
+    const number = Number(value);
+
+    if (number >= 1000) {
+      return number.toLocaleString(
+        undefined,
+        {
+          maximumFractionDigits: 2
+        }
+      );
+    }
+
+    if (number >= 1) {
+      return number.toLocaleString(
+        undefined,
+        {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 4
+        }
+      );
+    }
+
+    return number.toLocaleString(
+      undefined,
+      {
+        maximumSignificantDigits: 8
+      }
+    );
+  }
+
+
+  /*
+   * =====================================================
+   * FORMAT PERCENTAGE
+   * =====================================================
+   */
+
+  function formatPercent(value) {
+
+    if (
+      value === null ||
+      value === undefined ||
+      Number.isNaN(Number(value))
+    ) {
+      return "--";
+    }
+
+    const number = Number(value);
+
+    return (
+      number >= 0 ? "+" : ""
+    ) +
+      number.toFixed(2) +
+      "%";
+  }
+
+
+  /*
+   * =====================================================
+   * FORMAT TIME
+   * =====================================================
+   */
+
+  function formatTime(timestamp) {
+
+    if (!timestamp) {
+      return "Unknown";
+    }
+
+    const date =
+      new Date(timestamp);
+
+    return date.toLocaleTimeString();
+  }
+
+
+  /*
+   * =====================================================
+   * LOAD MARKET DATA
+   * =====================================================
+   */
+
+  async function loadMarkets() {
 
     try {
 
+      statusBox.className =
+        "status";
+
+      statusBox.textContent =
+        "Connecting to Render API...";
+
+
       const response =
-        await fetch(API_URL + "/markets");
+        await fetch(
+          API_URL + "/markets",
+          {
+            method: "GET",
+            cache: "no-store"
+          }
+        );
+
 
       if (!response.ok) {
+
         throw new Error(
-          "API returned HTTP " + response.status
+          "API returned HTTP " +
+          response.status
         );
+
       }
+
 
       marketData =
         await response.json();
 
-      displayMarkets();
 
-      loadArbitrage();
+      renderMarkets();
+
+      renderExchangeStatus();
 
       updateStats();
 
+
+      statusBox.className =
+        "status online";
+
+      statusBox.textContent =
+        "● API connected — live market data received";
+
+
     } catch (error) {
 
-      console.error(error);
+      console.error(
+        "Market API error:",
+        error
+      );
 
-      errorBox.innerText =
-        "Unable to load market data. The API may be waking up or temporarily unavailable.";
 
-      errorBox.style.display = "block";
+      statusBox.className =
+        "status error";
+
+      statusBox.textContent =
+        "Unable to connect to the API. Render may be waking up. Try Refresh Now.";
 
     }
 
@@ -524,38 +752,89 @@
 
 
   /*
-  ==========================================================
-  DISPLAY MARKETS
-  ==========================================================
-  */
+   * =====================================================
+   * LOAD ARBITRAGE
+   * =====================================================
+   */
 
-  function displayMarkets() {
+  async function loadArbitrage() {
 
-    const table =
-      document.getElementById("marketTable");
+    try {
 
-    table.innerHTML = "";
+      const response =
+        await fetch(
+          API_URL + "/arbitrage",
+          {
+            method: "GET",
+            cache: "no-store"
+          }
+        );
 
-    if (!marketData || !marketData.exchanges) {
 
-      table.innerHTML = `
-        <tr>
-          <td colspan="7" class="loading">
-            No market data available.
-          </td>
-        </tr>
-      `;
+      if (!response.ok) {
+        throw new Error(
+          "Arbitrage API error " +
+          response.status
+        );
+      }
 
+
+      arbitrageData =
+        await response.json();
+
+
+      renderArbitrage();
+
+      updateStats();
+
+
+    } catch (error) {
+
+      console.error(
+        "Arbitrage error:",
+        error
+      );
+
+      arbitrageList.innerHTML =
+        `
+        <div class="empty">
+          Arbitrage data is currently unavailable.
+        </div>
+        `;
+
+    }
+
+  }
+
+
+  /*
+   * =====================================================
+   * RENDER MARKETS
+   * =====================================================
+   */
+
+  function renderMarkets() {
+
+    if (!marketData) {
       return;
     }
 
 
+    const selectedCoin =
+      coinSelect.value;
+
+
     const search =
-      document
-        .getElementById("search")
-        .value
+      searchInput.value
         .trim()
         .toUpperCase();
+
+
+    marketTable.innerHTML = "";
+
+
+    const exchanges =
+      marketData.exchanges || {};
 
 
     let rows = 0;
@@ -563,691 +842,306 @@
 
     for (
       const exchangeName
-      in marketData.exchanges
+      of Object.keys(exchanges)
     ) {
 
       const exchange =
-        marketData.exchanges[exchangeName];
+        exchanges[exchangeName];
 
 
-      if (
-        !exchange ||
-        exchange.status !== "online"
-      ) {
+      const ticker =
+        exchange.data
+          ? exchange.data[selectedCoin]
+          : null;
+
+
+      if (!ticker) {
         continue;
       }
 
 
-      const coins =
-        exchange.data || {};
-
-
-      for (
-        const symbol in coins
+      if (
+        search &&
+        !exchangeName
+          .toUpperCase()
+          .includes(search) &&
+        !selectedCoin
+          .toUpperCase()
+          .includes(search)
       ) {
 
-        if (
-          search &&
-          !symbol
-            .toUpperCase()
-            .includes(search)
-        ) {
-          continue;
-        }
-
-
-        const ticker =
-          coins[symbol];
-
-
-        const price =
-          formatPrice(ticker.price);
-
-        const bid =
-          formatPrice(ticker.bid);
-
-        const ask =
-          formatPrice(ticker.ask);
-
-        const change =
-          ticker.change24h;
-
-        const volume =
-          formatVolume(
-            ticker.quoteVolume24h
-          );
-
-
-        let changeHTML = "--";
-
-
-        if (
-          change !== null &&
-          change !== undefined
-        ) {
-
-          const className =
-            change >= 0
-              ? "positive"
-              : "negative";
-
-          changeHTML = `
-            <span class="${className}">
-              ${change >= 0 ? "+" : ""}
-              ${Number(change).toFixed(2)}%
-            </span>
-          `;
-
-        }
-
-
-        table.innerHTML += `
-
-          <tr>
-
-            <td class="coin">
-              ${symbol.replace("/USDT", "")}
-            </td>
-
-            <td class="exchange">
-              <span class="status">
-                <span class="dot"></span>
-                ${exchangeName}
-              </span>
-            </td>
-
-            <td>
-              ${price}
-            </td>
-
-            <td>
-              ${changeHTML}
-            </td>
-
-            <td>
-              ${bid}
-            </td>
-
-            <td>
-              ${ask}
-            </td>
-
-            <td>
-              ${volume}
-            </td>
-
-          </tr>
-
-        `;
-
-        rows++;
+        continue;
 
       }
+
+
+      rows++;
+
+
+      const change =
+        ticker.change24h;
+
+
+      const changeClass =
+        change !== null &&
+        change !== undefined
+          ? Number(change) >= 0
+            ? "green"
+            : "red"
+          : "";
+
+
+      const tr =
+        document.createElement("tr");
+
+
+      tr.innerHTML = `
+
+        <td class="exchange-name">
+          ${escapeHtml(exchangeName)}
+        </td>
+
+        <td>
+          <span class="badge online">
+            ONLINE
+          </span>
+        </td>
+
+        <td>
+          <strong>
+            $${formatNumber(ticker.price)}
+          </strong>
+        </td>
+
+        <td>
+          $${formatNumber(ticker.bid)}
+        </td>
+
+        <td>
+          $${formatNumber(ticker.ask)}
+        </td>
+
+        <td class="${changeClass}">
+          ${formatPercent(change)}
+        </td>
+
+        <td>
+          $${formatNumber(ticker.quoteVolume24h)}
+        </td>
+
+      `;
+
+
+      marketTable.appendChild(tr);
 
     }
 
 
-    if (!rows) {
+    if (rows === 0) {
 
-      table.innerHTML = `
+      marketTable.innerHTML =
+        `
         <tr>
-          <td colspan="7" class="loading">
-            No matching coins found.
+          <td colspan="7" class="empty">
+            No market data available for ${escapeHtml(selectedCoin)}.
           </td>
         </tr>
-      `;
-
-    }
-
-  }
-
-
-  /*
-  ==========================================================
-  ARBITRAGE
-  ==========================================================
-  */
-
-  async function loadArbitrage() {
-
-    const container =
-      document.getElementById(
-        "arbitrageTable"
-      );
-
-
-    try {
-
-      const response =
-        await fetch(
-          API_URL + "/arbitrage"
-        );
-
-
-      if (!response.ok) {
-        throw new Error(
-          "Arbitrage API error"
-        );
-      }
-
-
-      const data =
-        await response.json();
-
-
-      container.innerHTML = "";
-
-
-      const opportunities =
-        data.opportunities || [];
-
-
-      if (!opportunities.length) {
-
-        container.innerHTML = `
-          <div class="loading">
-            No arbitrage opportunities found.
-          </div>
         `;
 
-        return;
-
-      }
-
-
-      opportunities
-        .slice(0, 20)
-        .forEach(opportunity => {
-
-          const spread =
-            Number(
-              opportunity.grossSpread || 0
-            );
-
-
-          container.innerHTML += `
-
-            <div class="arb-row">
-
-              <div class="coin">
-                ${opportunity.symbol
-                  .replace("/USDT", "")}
-              </div>
-
-              <div>
-                ${opportunity.buyExchange}
-                <br>
-                <strong>
-                  ${formatPrice(
-                    opportunity.buyPrice
-                  )}
-                </strong>
-              </div>
-
-              <div>
-                ${opportunity.sellExchange}
-                <br>
-                <strong>
-                  ${formatPrice(
-                    opportunity.sellPrice
-                  )}
-                </strong>
-              </div>
-
-              <div class="spread">
-                ${spread.toFixed(3)}%
-              </div>
-
-              <div>
-                <span class="green">
-                  Potential
-                </span>
-              </div>
-
-            </div>
-
-          `;
-
-        });
-
-
-    } catch (error) {
-
-      console.error(error);
-
-      container.innerHTML = `
-        <div class="loading">
-          Unable to load arbitrage data.
-        </div>
-      `;
-
     }
+
+
+    document.getElementById(
+      "lastUpdated"
+    ).textContent =
+      marketData.timestamp
+        ? "Updated " +
+          formatTime(
+            marketData.timestamp
+          )
+        : "Updated recently";
 
   }
 
 
   /*
-  ==========================================================
-  STATISTICS
-  ==========================================================
-  */
+   * =====================================================
+   * RENDER EXCHANGE STATUS
+   * =====================================================
+   */
 
-  function updateStats() {
+  function renderExchangeStatus() {
 
-    if (
-      !marketData ||
-      !marketData.exchanges
-    ) {
+    if (!marketData) {
       return;
     }
+
+
+    exchangeTable.innerHTML = "";
 
 
     const exchanges =
-      Object.values(
-        marketData.exchanges
-      );
-
-
-    const totalExchanges =
-      exchanges.length;
-
-
-    const onlineExchanges =
-      exchanges.filter(
-        exchange =>
-          exchange.status === "online"
-      ).length;
-
-
-    const symbols =
-      new Set();
-
-
-    exchanges.forEach(exchange => {
-
-      if (!exchange.data) {
-        return;
-      }
-
-
-      Object.keys(
-        exchange.data
-      ).forEach(symbol => {
-
-        symbols.add(symbol);
-
-      });
-
-    });
-
-
-    document.getElementById(
-      "exchangeCount"
-    ).innerText =
-      totalExchanges;
-
-
-    document.getElementById(
-      "onlineCount"
-    ).innerText =
-      onlineExchanges;
-
-
-    document.getElementById(
-      "coinCount"
-    ).innerText =
-      symbols.size;
-
-
-    document.getElementById(
-      "updated"
-    ).innerText =
-      new Date().toLocaleTimeString();
-
-
-    findBestSpread();
-
-  }
-
-
-  /*
-  ==========================================================
-  BEST SPREAD
-  ==========================================================
-  */
-
-  function findBestSpread() {
-
-    let best =
-      null;
-
-
-    if (
-      !marketData ||
-      !marketData.exchanges
-    ) {
-      return;
-    }
-
-
-    const prices = {};
+      marketData.exchanges || {};
 
 
     for (
       const exchangeName
-      in marketData.exchanges
+      of Object.keys(exchanges)
     ) {
 
       const exchange =
-        marketData.exchanges[
-          exchangeName
-        ];
+        exchanges[exchangeName];
 
 
-      if (
-        exchange.status !== "online" ||
-        !exchange.data
-      ) {
-        continue;
-      }
+      const isOnline =
+        exchange.status === "online";
 
 
-      for (
-        const symbol
-        in exchange.data
-      ) {
-
-        const ticker =
-          exchange.data[symbol];
+      const tr =
+        document.createElement("tr");
 
 
-        if (
-          ticker &&
-          ticker.price
-        ) {
+      tr.innerHTML = `
 
-          if (!prices[symbol]) {
-            prices[symbol] = [];
-          }
+        <td class="exchange-name">
+          ${escapeHtml(exchangeName)}
+        </td>
+
+        <td>
+
+          <span class="badge ${
+            isOnline
+              ? "online"
+              : "offline"
+          }">
+
+            ${
+              isOnline
+                ? "ONLINE"
+                : "OFFLINE"
+            }
+
+          </span>
+
+        </td>
+
+      `;
 
 
-          prices[symbol].push({
-
-            exchange:
-              exchangeName,
-
-            price:
-              Number(
-                ticker.price
-              )
-
-          });
-
-        }
-
-      }
+      exchangeTable.appendChild(tr);
 
     }
-
-
-    for (
-      const symbol in prices
-    ) {
-
-      const list =
-        prices[symbol];
-
-
-      if (list.length < 2) {
-        continue;
-      }
-
-
-      const lowest =
-        [...list]
-          .sort(
-            (a, b) =>
-              a.price - b.price
-          )[0];
-
-
-      const highest =
-        [...list]
-          .sort(
-            (a, b) =>
-              b.price - a.price
-          )[0];
-
-
-      if (
-        lowest.price <= 0
-      ) {
-        continue;
-      }
-
-
-      const spread =
-        (
-          (highest.price -
-            lowest.price)
-          /
-          lowest.price
-        ) * 100;
-
-
-      if (
-        !best ||
-        spread > best
-      ) {
-
-        best = spread;
-
-      }
-
-    }
-
-
-    document.getElementById(
-      "bestSpread"
-    ).innerText =
-      best !== null
-        ? best.toFixed(3) + "%"
-        : "--";
 
   }
 
 
   /*
-  ==========================================================
-  PRICE FORMAT
-  ==========================================================
-  */
+   * =====================================================
+   * RENDER ARBITRAGE
+   * =====================================================
+   */
 
-  function formatPrice(price) {
+  function renderArbitrage() {
 
-    if (
-      price === null ||
-      price === undefined
-    ) {
-      return "--";
+    if (!arbitrageData) {
+      return;
     }
 
 
-    const number =
-      Number(price);
+    const opportunities =
+      arbitrageData.opportunities || [];
 
 
-    if (
-      !Number.isFinite(number)
-    ) {
-      return "--";
-    }
-
-
-    if (number >= 1000) {
-
-      return number.toLocaleString(
-        undefined,
-        {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2
-        }
-      );
-
-    }
-
-
-    if (number >= 1) {
-
-      return number.toFixed(4);
-
-    }
-
-
-    if (number >= 0.01) {
-
-      return number.toFixed(6);
-
-    }
-
-
-    return number.toPrecision(6);
-
-  }
-
-
-  /*
-  ==========================================================
-  VOLUME FORMAT
-  ==========================================================
-  */
-
-  function formatVolume(volume) {
-
-    if (
-      volume === null ||
-      volume === undefined
-    ) {
-      return "--";
-    }
-
-
-    const number =
-      Number(volume);
+    arbitrageList.innerHTML = "";
 
 
     if (
-      !Number.isFinite(number)
+      opportunities.length === 0
     ) {
-      return "--";
-    }
 
+      arbitrageList.innerHTML =
+        `
+        <div class="empty">
+          No arbitrage opportunities found.
+        </div>
+        `;
 
-    if (number >= 1000000000) {
-
-      return "$" +
-        (number / 1000000000)
-          .toFixed(2) +
-        "B";
-
-    }
-
-
-    if (number >= 1000000) {
-
-      return "$" +
-        (number / 1000000)
-          .toFixed(2) +
-        "M";
+      return;
 
     }
 
 
-    if (number >= 1000) {
+    /*
+     * Show top opportunities.
+     */
 
-      return "$" +
-        (number / 1000)
-          .toFixed(2) +
-        "K";
+    opportunities
+      .slice(0, 30)
+      .forEach(
+        opportunity => {
 
-    }
-
-
-    return "$" +
-      number.toFixed(2);
-
-  }
-
-
-  /*
-  ==========================================================
-  SEARCH
-  ==========================================================
-  */
-
-  document
-    .getElementById("search")
-    .addEventListener(
-      "input",
-      displayMarkets
-    );
+          const card =
+            document.createElement(
+              "div"
+            );
 
 
-  /*
-  ==========================================================
-  AUTO REFRESH
-  ==========================================================
-  */
-
-  function startAutoRefresh() {
-
-    if (refreshTimer) {
-      clearInterval(
-        refreshTimer
-      );
-    }
+          card.className =
+            "arbitrage-card";
 
 
-    const seconds =
-      Number(
-        document
-          .getElementById(
-            "refreshRate"
-          )
-          .value
-      );
+          card.innerHTML = `
+
+            <div>
+              <span class="arb-label">
+                Coin
+              </span>
+
+              <div class="arb-symbol">
+                ${escapeHtml(
+                  opportunity.symbol
+                )}
+              </div>
+            </div>
 
 
-    refreshTimer =
-      setInterval(
-        loadData,
-        seconds * 1000
-      );
+            <div>
 
-  }
+              <span class="arb-label">
+                Buy
+              </span>
+
+              <strong>
+                ${escapeHtml(
+                  opportunity.buyExchange
+                )}
+              </strong>
+
+              <br>
+
+              $${formatNumber(
+                opportunity.buyPrice
+              )}
+
+            </div>
 
 
-  document
-    .getElementById(
-      "refreshRate"
-    )
-    .addEventListener(
-      "change",
-      startAutoRefresh
-    );
+            <div>
 
+              <span class="arb-label">
+                Sell
+              </span>
 
-  /*
-  ==========================================================
-  START
-  ==========================================================
-  */
+              <strong>
+                ${escapeHtml(
+                  opportunity.sellExchange
+                )}
+              </strong>
 
-  loadData();
+              <br>
 
-  startAutoRefresh();
+              $${formatNumber(
+                opportunity.sellPrice
+              )}
 
-</script>
-
-</body>
-</html>
+            </div
